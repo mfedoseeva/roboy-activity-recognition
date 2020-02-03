@@ -1,0 +1,1 @@
+rosservice call /roboy/cognition/speech/synthesis/talk "text: 'privette'"

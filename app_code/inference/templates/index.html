@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>HAR</title>
+  </head>
+
+  <style>
+body {
+  background-color: black;
+  /* remove all borders */
+  margin: 0;
+  padding: 0;
+  /* hide scrollbar */
+  overflow: hidden;
+}
+
+  #widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  #cams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+  }
+
+  .cam {
+    height: 70vh;
+  }
+
+  #live {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+  }
+
+  #overlayCanvas {
+    position: absolute;
+    z-index: 1;
+    opacity: 0.6;
+  }
+
+  #streamCanvas {
+    display: none;
+    width: 640px;
+    height: 360px;
+  }
+  </style>
+
+  <body>
+
+    <div id="widget">
+      <div id="cams">
+        <img class="cam" id="cam1" src="" alt="cam1" />
+        <img class="cam" id="cam2" src="" alt="cam2" />
+      </div>
+      <progress id="timer" style="width: 40vw;" max="100" value="80"></progress>
+      <textarea id="text" rows="5" cols="40" style="font-size: 28px;">
+      </textarea>
+    </div>
+    <script>
+      const delay = 40;
+const frames = 79;
+const update_time = 30;
+let t = undefined;
+
+const cam1 = document.getElementById("cam1");
+const cam2 = document.getElementById("cam2");
+const timer = document.getElementById("timer")
+const text = document.getElementById("text")
+text.value = "";
+
+// text.value = "HEllo World!"
+
+timer.max = delay * frames + 500;
+timer.value = 0;
+var ws = new WebSocket(`ws://${window.location.hostname}:8765`)
+
+ws.onclose = event => {
+  console.log("socket closed")
+  console.log(event)
+}
+
+ws.onmessage = (event) => {
+  console.log("Received message")
+
+  let type = event.data.charAt(0);
+  let msg = event.data.slice(1);
+
+  switch(type) {
+    case '0':
+      cam1.src = msg;
+      break;
+    case '1':
+      cam2.src = msg;
+      break;
+    case '2':
+      if (t == undefined) {
+        startProgress();
+      }
+      timer.value = 0;
+      break;
+    case '3':
+      text.value = msg;
+      break;
+    default:
+      console.log(event.data);
+  }
+};
+
+
+function startProgress() {
+  t = setInterval(
+    () => {
+      if (timer.value < timer.max) {
+        timer.value = Math.min(timer.value + update_time, timer.max);
+      }
+    }, update_time);
+  return t;
+}
+// ws.onopen = event => {
+// }
+    </script>
+  </body>
+
+</html>

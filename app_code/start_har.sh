@@ -1,0 +1,1 @@
+roslaunch ha_recognition activity_recognition.launch
