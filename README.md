@@ -1,7 +1,7 @@
 # Online Human Activity Recognition for Roboy
 
-There are two primary ways to run and use the application: with [Ravestate](https://github.com/Roboy/ravestate) dialog as a Charades game, and without the dialog as continuously running action recognition pipeline (see below).  
-The implementation requires GPU.
+There are two primary ways to run and use the application: with [Ravestate](https://github.com/Roboy/ravestate) dialog as a Charades game, and without the dialog as a continuously running action recognition pipeline (see below).  
+The code requires Nvidia GPU to run.
 
 ## Continuous human activity recognition without the Ravestate dialog
 
@@ -20,20 +20,28 @@ voicing of predictions uses /roboy/cognition/speech/synthesis/talk service of Ro
 1. clone this repository
 
 2. run 
-```make build```
+```
+make build
+```
 to build the container 
 
-3. to run the container
-```make run```  
+3. to run the container  
+```
+make run
+```  
 When running, container starts the Human Activity Recognition server.  
 Server outputs "STARTED<<<<<<<<<<<<<<<<<<<
 ready to recognize" on the standard output when it's ready
 
 4. To run the application w/out the dialog, run
-```make pipeline```
+```
+make pipeline
+```
 
-5. to connect to the container in case you want to manually run any of the components or kill the server node, run 
-```make connect```
+5. to connect to the container in case you want to manually run any of the components or kill the server node, run   
+```
+make connect
+```
 
 6. running a container starts a GUI at http://localhost:8000/
 
@@ -73,12 +81,14 @@ This is the [link](https://github.com/Roboy/ravestate/issues/152) to the issue. 
 This command builds and runs this container and neo4j container, which is required to run Ravestate.  
 Human activity recognition server will start upon the start of the container.
 
-3. to  start the dialog, run
+3. to  start the dialog, run  
 ```
 make ravestate
 ```
-4. to connect to the container in case you want to manually run any of the components or edit the config file, run 
-```make connect```
+4. to connect to the container in case you want to manually run any of the components or edit the config file, run   
+```
+make connect
+```
 
 5. running a container starts a GUI at http://localhost:8000/
 
