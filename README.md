@@ -1,6 +1,6 @@
-# Human Activity Recognition for Roboy
+# Online Human Activity Recognition for Roboy
 
-There are two primary ways to run and use the application: with Ravestate dialog as Charades game, and without the dialog (see below).  
+There are two primary ways to run and use the application: with [Ravestate](https://github.com/Roboy/ravestate) dialog as a Charades game, and without the dialog as continuously running action recognition pipeline (see below).  
 The implementation requires GPU.
 
 ## Continuous human activity recognition without the Ravestate dialog
@@ -14,7 +14,6 @@ This version of the implementation runs continuously in the following way:
 3. goes to step 1.  
 
 voicing of predictions uses /roboy/cognition/speech/synthesis/talk service of Roboy.  
-assumes ROS_MASTER is at http://192.168.0.105:11311/    
 
 ### Installation and Running
 
@@ -53,10 +52,8 @@ This version of the implementation is a Charades game with natural language inte
 	* enter your password to neo4j
 	* if you have access to Roboy and his speech services, add ravestate_roboyio to the core config; otherwise, use ravestate_conio to communicate on console
 	* if you have access to Roboy and his face/emotion service, change 'emotions: False' to 'emotions: True'
-2. now run (in ravestate directory):
-```python3 -m ravestate -f config/charades.yml```
 
-3. ravestate dialog controls the game flow and does the calls to the recognition component
+2. ravestate dialog controls the game flow and does the calls to the recognition server
 
 * NOTE: To use Ravestate with ROS without ravestate_roboyio, but using ravestate_conio, currently the following workaround is needed:
 file ravestate/modules/ravestate_ros1/ros1_properties.py line 54 
@@ -96,7 +93,7 @@ make ravestate
 ./compose.sh down
 ```  
 
-* NOTE: compose.sh script is used instead of docker-compose due to absence of support of GPU in the current compose version.   
+* NOTE: compose.sh script is used instead of the docker-compose due to absence of support of GPU in the current compose version.   
 [Issue Tracker](https://github.com/docker/compose/issues/6691) - once the support is in place, normal docker-compose can be used instead 
 
 

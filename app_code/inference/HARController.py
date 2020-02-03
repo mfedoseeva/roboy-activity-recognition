@@ -44,6 +44,7 @@ class HARController:
             except:
                 break
         # rgb_time = time.time() - loop_start
-        self.cam.stop()
+        # self.cam.stop()
+        self.cam.stopDisplay()
         self.view.current_text = 'Thinking'
         self.view.showImg(_DEFAULT_IMG)

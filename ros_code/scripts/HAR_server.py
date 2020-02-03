@@ -35,7 +35,7 @@ class Recognition_server:
 
     def publish_prediction(self, prediction):
         self.pub.publish(ActivityLabel(prediction[0], prediction[1]))
-        self.cam.start()
+        self.cam.startDisplay()
 
 if __name__ == "__main__":
     server = Recognition_server(10)

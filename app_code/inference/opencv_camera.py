@@ -22,19 +22,27 @@ class Webcam(Camera):
         # self.cap.set(cv2.CAP_PROP_ISO_SPEED, iso)
         self.showImg = showImg
         self.stopped = True
+        self.display = False
 
     def _next(self):
         while not self.stopped:
             (self.ret, self.frame) = self.cap.read()
-            if not self.stopped:
+            if not self.stopped and self.display:
                 self.showImg(self.frame)
 
     def start(self):
         self.stopped = False
+        self.startDisplay()
         threading.Thread(target=self._next, args=()).start()
 
     def stop(self):
         self.stopped = True
+
+    def startDisplay(self):
+        self.display = True
+
+    def stopDisplay(self):
+        self.display = False
 
     def read(self):
         return self.ret, self.frame

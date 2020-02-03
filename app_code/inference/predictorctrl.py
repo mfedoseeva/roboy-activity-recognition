@@ -21,6 +21,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 
 time_counter = 0
 
+def isCorrupted(img_path):
+    with open(os.path.join(img_path), 'rb') as f:
+        check_chars = f.read()[-2:]
+        return check_chars != b'\xff\xd9'
+
 
 class NewImageHandler(FileSystemEventHandler):
     def __init__(self, callback):
@@ -143,6 +148,8 @@ class PredictorController:
         if time_counter == 0:
             time_counter = time.time()
 
+        if isCorrupted(img_path):
+            return
         img = cv2.imread(img_path)
         if img is None:
             return

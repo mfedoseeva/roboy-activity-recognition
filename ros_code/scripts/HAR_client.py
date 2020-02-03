@@ -15,7 +15,7 @@ def recognition_client():
         print('Service call failed: ', e)
 
 def listener_callback(label):
-    print(label.label[0])
+    talk_client(label.label[0])
     for x, y in zip(label.confidence, label.label):
         print(x, y)
     recognition_client()

@@ -28,11 +28,11 @@ class ImageServer:
     def __init__(self):
         self.current_img = None
         self._current_text = ""
-        self.event = threading.Event()
-        self.start_progress = False
+
+        self.clients = set()
 
         ip = '0.0.0.0'
-        ws_server = websockets.serve(self.serve, ip, 8765)
+        ws_server = websockets.serve(self.serve, ip, 8765, ping_timeout=60)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(ws_server)
         self.wst = threading.Thread(target=loop.run_forever)
@@ -56,21 +56,22 @@ class ImageServer:
         self.wst.stop()
 
     async def serve(self, websocket, path):
-        # websocket.wait_closed()
-        while True:
-            self.event.wait()
-            self.event.clear()
+        self.clients.add(websocket)
+        await websocket.wait_closed()
+        self.clients.remove(websocket)
+
+    async def broadcastAsync(self, msg):
+        clients = list(self.clients)
+        for client in clients:
             try:
-                if self.current_img is not None:
-                    await websocket.send("0" + self.current_img)
-                if self.start_progress:
-                    await websocket.send("1")
-                    self.start_progress = False
-                await websocket.send("3" + str(self._current_text))
-            except ConnectionClosed as e:
-                print("Oops", e)
-                break
-        print("Connection closed")
+                await client.send(str(msg))
+            except Exception as e:
+                print(e)
+                print(msg)
+
+    def broadcast(self, msg):
+        asyncio.new_event_loop().run_until_complete(self.broadcastAsync(msg))        
+        # asyncio.run(self.broadcastAsync(msg))
 
     @property
     def current_text(self):
@@ -78,18 +79,17 @@ class ImageServer:
 
     @current_text.setter
     def current_text(self, val):
-        self._current_text = val
-        self.event.set()
+        self._current_text = str( val )
+        self.broadcast("3" + self._current_text)
 
     # show opencv image
     def showImg(self, img):
         encoded = cvImgToBase64(img)
         self.current_img = encoded
-        self.event.set()
+        self.broadcast("0" + self.current_img)
 
     # def showDefault(self):
     #     self.current_img = _DEFAULT_IMG
 
     def progressStart(self):
-        self.start_progress = True
-        self.event.set()
+        self.broadcast("1" + self.current_img)

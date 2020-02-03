@@ -112,8 +112,7 @@ RUN echo "Installing ROS" && \
    rosdep init && \
    rosdep update && \
    echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc && \
-   # echo "export ROS_MASTER_URI="http://192.168.0.105:11311/"" >> ~/.bashrc && \
-   echo "export ROS_MASTER_URI="http://localhost:11311/"" >> ~/.bashrc && \
+   echo "export ROS_MASTER_URI="http://192.168.0.105:11311/"" >> ~/.bashrc && \
    apt install python-rosinstall python-rosinstall-generator python-wstool build-essential -y --no-install-recommends
 
 WORKDIR $APPDIR
@@ -156,29 +155,20 @@ RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | 
   && cd ravestate/modules/raveboard && npm install' \
   && apt-get install -y iproute2
 
-## HUMAN ACTIVITY RECOGNITION FRONTEND
-
-# Install yarn
-# RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
-#   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list \
-#   && sudo apt update && sudo apt install -y --no-install-recommends yarn
-
-# move build files from react-frontend dir to inference
-# RUN mkdir -p ./app_code/inference
-# COPY ./app_code/inference/frontend ./app_code/inference/frontend
-# RUN cd app_code/inference/frontend \
-#   && bash -c 'source ~/.nvm/nvm.sh && npm install -g yarn && yarn build' && mv build ../
-
-## TODO: REFACTOR
 
 ## APP CODE
 COPY ./ros_code ./catkin_ws/src/ha_recognition
 COPY ./app_code ./app_code
 
+## HUMAN ACTIVITY RECOGNITION FRONTEND
+RUN cd ./app_code/inference/frontend \
+  && bash -c 'source ~/.nvm/nvm.sh && npm install -g yarn && npm install && yarn build' \
+  && mv build ../frontend_files
+
 # copy checkpoints and label map from i3d repository
-# RUN cd ./app_code && git clone https://github.com/deepmind/kinetics-i3d.git && \
-#   cp -r ./kinetics-i3d/data/ ./inference/data && \
-#   rm -rf ./kinetics-i3d
+RUN cd ./app_code && git clone https://github.com/deepmind/kinetics-i3d.git && \
+  cp -r ./kinetics-i3d/data/ ./inference/data && \
+  rm -rf ./kinetics-i3d
 
 # build catkin workspace again after the developed ros code is copied in the container
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd catkin_ws; catkin_make'

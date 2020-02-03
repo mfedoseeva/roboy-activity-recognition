@@ -46,13 +46,13 @@ const BorderLinearProgress = withStyles({
 
 
 function WebSocketClient(){
-  this.autoReconnectInterval = 5*1000;  // ms
+  this.autoReconnectInterval = 1000;  // ms
 }
 
 WebSocketClient.prototype.open = function(url){
   this.url = url;
   if (this.instance !== undefined && this.instance.readyState < 2) {
-    console.log("already opened");
+    console.log("non-closed socket already exists");
     return;
   }
   this.instance = new WebSocket(this.url);
@@ -97,7 +97,7 @@ class HARView extends React.Component {
     super(props);
     this.state = {
       progress: 0,
-      text: "Beep",
+      text: "",
       img_src: "https://www.robotnik.eu/web/wp-content/uploads//2013/10/Roboy.jpg",
     }
 
