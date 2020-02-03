@@ -51,9 +51,9 @@ make pipeline
 make connect
 ```
 
-6. running a container starts a GUI at http://localhost:8000/
+6. running the container starts a GUI at http://localhost:8000/
 
-7. if the camera that you want to use is not /dev/video0, then you can change videoX to your camera 
+7. if the camera that you want to use is not /dev/video0, then you can change videoX to your camera  
 ```--device=/dev/videoX:/dev/video0 \``` in Makefile.
 
 
@@ -98,7 +98,7 @@ make ravestate
 make connect
 ```
 
-5. running a container starts a GUI at http://localhost:8000/
+5. running the containers starts a GUI at http://localhost:8000/
 
 6. if the camera that you want to use is not /dev/video0, then you can change videoX to your camera  
 ```--device=/dev/videoX:/dev/video0 \``` in the compose.sh script.
@@ -112,7 +112,7 @@ make connect
 ./compose.sh down
 ```  
 
-* NOTE: compose.sh script is used instead of the docker-compose due to absence of support of GPU in the current docker-compose version.   
+* NOTE: compose.sh script is used instead of the docker-compose due to the absence of support of GPU in the current docker-compose version.   
 [Issue Tracker](https://github.com/docker/compose/issues/6691) - once the support is in place, normal docker-compose can be used instead 
 
 
