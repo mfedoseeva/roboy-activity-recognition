@@ -145,7 +145,7 @@ class PredictorController:
 
         img = cv2.imread(img_path)
         if img is None:
-            pass
+            return
         img = self.process_rgb(img)
 
         self.rgbs[idx] = img
