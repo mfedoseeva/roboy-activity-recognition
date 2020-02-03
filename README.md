@@ -33,7 +33,7 @@ ready to recognize" on the standard output when it's ready
 4. To run the application w/out the dialog, run
 ```make pipeline```
 
-5. to connect to the container in case you want to manually run any of the components or kill the Activity Recognition node, run 
+5. to connect to the container in case you want to manually run any of the components or kill the server node, run 
 ```make connect```
 
 6. running a container starts a GUI at http://localhost:8000/
@@ -68,17 +68,19 @@ This is the [link](https://github.com/Roboy/ravestate/issues/152) to the issue. 
 ### Installation and Running
 
 1. clone this repository
+
 2. run
 ```
 ./compose.sh up
 ```
-to build and run this container and neo4j container, which is required to run Ravestate.  
+This command builds and runs this container and neo4j container, which is required to run Ravestate.  
 Human activity recognition server will start upon the start of the container.
+
 3. to  start the dialog, run
 ```
 make ravestate
 ```
-4. to connect to the container in case you want to manually run any of the components or kill the Activity Recognition node, run 
+4. to connect to the container in case you want to manually run any of the components or edit the config file, run 
 ```make connect```
 
 5. running a container starts a GUI at http://localhost:8000/

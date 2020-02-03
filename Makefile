@@ -3,7 +3,7 @@ CONTAINER_NAME=$(IMAGE_NAME)
 
 RUN_ARGS=--name=$(CONTAINER_NAME) \
 				 --device=/dev/video0:/dev/video0 \
-				 -p 5000:5000 -p 8000:8000 -p 42424:42424 -p 4200:4200  -p 8765:8765 --rm $(IMAGE_NAME)
+				 -p 5000:5000 -p 8000:8000 -p 42424:42424 -p 4200:4200 -p 8765:8765 --rm $(IMAGE_NAME)
 
 .PHONY : build run run-old connect build-and-run
 

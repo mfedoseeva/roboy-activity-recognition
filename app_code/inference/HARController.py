@@ -21,7 +21,7 @@ class HARController:
         self.predictor.on_prediction = self._on_prediction
 
     def _on_prediction(self, prediction):
-        # self.view.current_text = prediction[1]
+        self.view.current_text = ""
         self.on_prediction(prediction)
 
     def on_prediction(prediction):
@@ -29,6 +29,7 @@ class HARController:
 
     def record(self, fps=25):
         self.view.current_text = 'RECORDING...'
+        self.view.progressStart()
         delay = 1 / fps  # in seconds
         counter = 0
         # loop_start = time.time()
@@ -44,5 +45,5 @@ class HARController:
                 break
         # rgb_time = time.time() - loop_start
         self.cam.stop()
-        self.view.current_text = ''
+        self.view.current_text = 'Thinking'
         self.view.showImg(_DEFAULT_IMG)
